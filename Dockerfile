@@ -10,7 +10,7 @@ ARG GRADLE_INSTALL_URL=https://services.gradle.org/distributions/gradle-4.10-bin
 # Install Java, Maven and Gradle.
 RUN \
   yum -y update && \
-  yun install -y curl unzip && \
+  yum install -y curl unzip && \
   yum install -y java-1.6.0-openjdk-devel java-1.7.0-openjdk-devel
 RUN \
   curl -SL ${JAVA_8_INSTALL_URL} -o openjdk8.tar.gz && \
