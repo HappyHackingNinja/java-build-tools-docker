@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM centos:7
 
 LABEL maintainer="Kehao Chen <kehao.chen@happyhacking.ninja>"
 
@@ -9,15 +9,14 @@ ARG GRADLE_INSTALL_URL=https://services.gradle.org/distributions/gradle-4.10-bin
 
 # Install Java, Maven and Gradle.
 RUN \
-  apt-get update && \
-  apt-get -y upgrade && \
-  apt-get install -y curl unzip && \
-  apt-get install -y openjdk-6-jdk openjdk-7-jdk &&\
+  yum -y update && \
+  yum install -y java-1.6.0-openjdk-devel java-1.7.0-openjdk-devel && \
+RUN \
   curl -SL ${JAVA_8_INSTALL_URL} -o openjdk8.tar.gz && \
   curl -SL ${JAVA_9_INSTALL_URL} -o openjdk9.tar.gz && \
   tar -xzf openjdk8.tar.gz -C /usr/lib/jvm && \
   tar -xzf openjdk9.tar.gz -C /usr/lib/jvm && \
-  update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk8u172-b11/bin/java 9000
+  alternatives --install /usr/bin/java java /usr/lib/jvm/jdk8u172-b11/bin/java 9000
 RUN \
   curl -SL ${MAVEN_INSALL_URL} -o maven.tar.gz && \
   mkdir -p /opt/maven && \
@@ -32,8 +31,8 @@ WORKDIR /data
 
 # Define commonly used Java variables.
 ENV JAVA_HOME /usr/lib/jvm/jdk8u172-b11
-ENV JAVA_6_HOME /usr/lib/jvm/java-6-openjdk-amd64
-ENV JAVA_7_HOME /usr/lib/jvm/java-7-openjdk-amd64
+ENV JAVA_6_HOME /usr/lib/jvm/java-1.6.0
+ENV JAVA_7_HOME /usr/lib/jvm/java-1.7.0
 ENV JAVA_8_HOME /usr/lib/jvm/jdk8u172-b11
 ENV JAVA_9_HOME /usr/lib/jvm/jdk-9.0.4+11-jre
 ENV M2_HOME /opt/maven/apache-maven-3.5.4
