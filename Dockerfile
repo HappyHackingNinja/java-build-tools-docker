@@ -12,14 +12,16 @@ ARG GRADLE_INSTALL_URL=https://services.gradle.org/distributions/gradle-4.10-bin
 RUN \
   yum -y update && \
   yum install -y curl unzip && \
-  yum install -y java-1.6.0-openjdk-devel java-1.7.0-openjdk-devel
+  yum install -y java-1.6.0-openjdk-devel java-1.7.0-openjdk-devel && \
+  yum clean all
 RUN \
   curl -SL ${JAVA_8_INSTALL_URL} -o openjdk8.tar.gz && \
   curl -SL ${JAVA_9_INSTALL_URL} -o openjdk9.tar.gz && \
   tar -xzf openjdk8.tar.gz -C /usr/lib/jvm && \
   tar -xzf openjdk9.tar.gz -C /usr/lib/jvm && \
   alternatives --install /usr/bin/java java /usr/lib/jvm/${DEFAULT_JVM_FOLDER}/bin/java 3 && \
-  alternatives --set java /usr/lib/jvm/${DEFAULT_JVM_FOLDER}/bin/java
+  alternatives --set java /usr/lib/jvm/${DEFAULT_JVM_FOLDER}/bin/java && \
+  rm openjdk8.tar.gz openjdk9.tar.gz
 RUN \
   curl -SL ${MAVEN_INSALL_URL} -o maven.tar.gz && \
   mkdir -p /opt/maven && \
@@ -27,7 +29,7 @@ RUN \
   curl -SL ${GRADLE_INSTALL_URL} -o gradle.zip && \
   mkdir -p /opt/gradle && \
   unzip -d /opt/gradle gradle.zip && \
-  rm -rf /var/lib/apt/lists/*
+  rm maven.tar.gz gradle.zip
 
 # Define working directory.
 WORKDIR /data
