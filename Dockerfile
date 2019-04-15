@@ -16,12 +16,11 @@ RUN \
   yum clean all
 RUN \
   curl -SL ${MAVEN_INSALL_URL} -o maven.tar.gz && \
-  mkdir -p /opt/maven && \
+  mkdir -p /usr/share/maven && \
   tar -xzf maven.tar.gz -C /usr/share/maven --strip-components=1 && \
   curl -SL ${GRADLE_INSTALL_URL} -o gradle.zip && \
   unzip gradle.zip && \
   mv "gradle-${GRADLE_VERSION}" /user/share/gradle && \
-  mkdir -p /opt/gradle && \
   rm maven.tar.gz gradle.zip && \
   ln -s /usr/share/maven/bin/mvn /usr/bin/mvn && \
   ln -s /usr/share/gradle/bin/gradle /usr/bin/gradle
